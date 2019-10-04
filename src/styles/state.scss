@@ -1,0 +1,21 @@
+.label {
+    background-color: rgb(6, 7, 12);
+    color: #e2e2e2;
+    height: 1.5em;
+    line-height: 1.5em;
+    text-align: center;
+}
+
+.machine-state {
+    height: 3em;
+    line-height: 3em;
+    text-align: center;
+}
+
+.waiting {
+    background-color: #e2e2e2;
+}
+
+.ready {
+    background-color: rgb(245, 154, 51);
+}

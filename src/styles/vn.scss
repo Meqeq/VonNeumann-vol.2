@@ -1,0 +1,56 @@
+.control-panel {
+    & {
+        grid-area: controls;
+    }
+
+    .control-buttons {
+        & {
+            margin: 0.5em 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .control-button {
+            & {
+                width: calc(50% - 0.5em);
+                height: 4em;
+                display: inline-block;
+                text-align: center;
+                background-color: rgb(241, 95, 95);
+                margin: 0.5em 0;
+                padding: 0.3em;
+                cursor: pointer;
+            }
+
+            &:hover {
+                background-color: rgb(255, 109, 109);
+            }
+    
+            i {
+                font-size: 2em;
+            }
+    
+        }
+    }
+
+    .accumulators {
+        & {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        & > div {
+            & {
+                width: calc(50% - 0.5em);
+            }
+            
+            .value {
+                background-color: rgb(224, 224, 224);
+                height: 3em;
+                line-height: 3em;
+                text-align: center;
+            }
+        }
+    }
+}

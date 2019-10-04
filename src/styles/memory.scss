@@ -1,0 +1,23 @@
+.memory {
+    & {
+        grid-area: memory;
+        background-color: #1e1e1e;
+    }
+
+    table {
+        & {
+            width: 100%;
+        }
+
+        th {
+            width: 33.3%;
+            background-color: #2f2f2f;
+            text-align: center;
+            color: #fff;
+        }
+
+        th:nth-child(even) {
+            background-color: #404040;
+        }
+    }
+}

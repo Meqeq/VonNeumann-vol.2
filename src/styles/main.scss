@@ -1,0 +1,30 @@
+body {
+    
+}
+
+#root {
+    min-height: 100vh;
+    display: grid;
+    grid-gap: 1em 0;
+    grid-template-rows: 3em 1fr 1.5em;
+    grid-template-columns: 1em 1fr 1em 1fr 1em 1fr 1em;
+    grid-template-areas: 
+        "header header header header header header header"
+        ". code . controls . memory ."
+        "footer footer footer footer footer footer footer";
+}
+
+header {
+    grid-area: header;
+    background-color: rgb(6, 7, 12);
+    color: #fff;
+    text-align: center;
+    font-size: 1.5em;
+    line-height: 2em;
+}
+
+footer {
+    grid-area: footer;
+    background-color: #000;
+    color: #fff;
+}
