@@ -5,11 +5,18 @@ import Memory from './Memory';
 import Editor from './Editor';
 import State from './State';
 
-import { compileAction } from '../actions/vnActions';
+import { compileAction, stepAction } from '../actions/vnActions';
 
 import '../styles/vn.scss';
 
 class VN extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            interval: null
+        }
+    }
+
     render() {
         return(
             <React.Fragment>
@@ -24,12 +31,12 @@ class VN extends Component {
                             <br />
                             <span>Skompiluj</span>
                         </div>
-                        <div className="control-button">
+                        <div className="control-button" onClick={ () => this.run() }>
                             <i className="fas fa-play" />
                             <br />
                             <span>Uruchom</span>
                         </div>
-                        <div className="control-button">
+                        <div className="control-button" onClick={ () => this.props.step() }>
                             <i className="fas fa-terminal" />
                             <br />
                             <span>Wykonaj krok</span>
@@ -45,13 +52,13 @@ class VN extends Component {
                         <div className="accA">
                             <div className="label">@A</div>
                             <div className="value">
-                                0
+                                { this.props.accA }
                             </div>
                         </div>
                         <div className="accB">
                             <div className="label">@B</div>
                             <div className="value">
-                                0
+                                { this.props.accB }
                             </div>
                         </div>
                     </div>
@@ -63,10 +70,11 @@ class VN extends Component {
     }
 }
 
-const mapStateToProps = state => ({ code: state.vn.code });
+const mapStateToProps = state => ({ code: state.vn.code, accA: state.vn.acc["@A"], accB: state.vn.acc["@B"] });
 
 const mapActionsToProps = {
-    compile: compileAction
+    compile: compileAction,
+    step: stepAction,
 }
 
 export default connect(mapStateToProps, mapActionsToProps)(VN);

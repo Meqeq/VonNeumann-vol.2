@@ -1,0 +1,264 @@
+---------------------------
+.UNIT, mnozenie
+.DATA
+    x: .WORD, 10
+    y: .WORD, 23
+    w: .WORD, 0
+.CODE
+    load, @B, (y)
+    load, @A, (w)
+et2:sub, @B, 1
+    jneg, et1
+    add, @A, (x)
+    jump, et2
+et1:store, @A, w
+    halt,
+.END
+---------------------------------------
+.UNIT, dzielenie
+.DATA
+	x: .WORD, 340
+	y: .WORD, 7
+	w: .WORD, 0
+	r: .WORD, 0
+.CODE
+	load, @B, (w)
+	load, @A, (x)
+et2:sub, @A, (y)
+	jneg, et1
+	add, @B, 1
+	jump, et2
+et1:add, @A, (y)
+	store, @A, r
+	store, @B, w
+	halt,
+.END
+---------------------------------------
+.UNIT, suma_n_nieparzystych
+.DATA
+    n: .WORD, 0
+    k: .WORD, 7
+    w: .WORD, 0
+.CODE
+    load, @B, (n)
+et2:jzero, et1
+    load, @A, (w)
+    add, @A, (k)
+    store, @A, w
+    load, @A, (k)
+    add, @A, 2
+    store, @A, k
+    sub, @B, 1
+    jump, et2
+et1:halt,
+.END
+-------------------------------
+.UNIT, suma_n_nieparzystych
+.DATA
+    n: .WORD, 3
+    k: .WORD, 7
+    w: .WORD, 0
+.CODE
+    load, @B, (n)
+et2:jzero, et1
+    load, @A, (w)
+    add, @A, (k)
+    store, @A, w
+    load, @A, (k)
+    add, @A, 2
+    store, @A, k
+    sub, @B, 1
+    jump, et2
+et1:halt,
+.END
+--------------------------------
+.UNIT, nwd_euklides
+.DATA
+    x: .WORD, 24
+    y: .WORD, 18
+    nwp: .WORD, 0
+.CODE
+et2:load, @A, (x)
+    div, @A, (y)
+    mult, @A, (y)
+    sub, @A, (x)
+    jzero, et1
+    mult, @A, -1
+    load, @B, (y)
+    store, @A, y
+    store, @B, x
+    jump, et2
+et1:load, @A, (y)
+    store, @A, nwp
+    halt,
+.END
+---------------------------------
+.UNIT, nwd_drugi_sposob
+.DATA
+    x: .WORD, 24
+    y: .WORD, 18
+    nwp: .WORD, 0
+.CODE
+et3:load, @A, (x)
+    sub, @A, (y)
+    jzero, et1
+    jpos, et2
+    load, @A, (y)
+    sub, @A, (x)
+    store, @A, y
+    jump, et3
+et2:load, @A, (x)
+    sub, @A, (y)
+    store, @A, x
+    jump,et3
+et1:load, @A, (x)
+    store, @A, nwp
+    halt,
+.END
+--------------------------------
+.UNIT, nww
+.DATA
+    x:.WORD, 15
+    y:.WORD, 6
+    nww:.WORD,0
+    s: .WORD, 0
+.CODE
+    load, @A, (x)
+    store, @A, s
+et1:div, @A, (y)
+    mult, @A, (y)
+    sub, @A, (s)
+    jzero, et2
+    load, @A, (s)
+    add, @A, (x)
+    store, @A, s
+    jump, et1
+et2:load, @A, (s)
+    store, @A, nww
+    halt,
+.END
+---------------------------------
+.UNIT, suma_parzystych_niepodzielnych_przez_4
+.DATA
+    a: .WORD, 1,4,6,7,3,8,23,2
+    adr: .WORD, a
+    n: .WORD, 8
+    wynik: .WORD, 0
+.CODE
+    load, @B, (n)
+et3:load, @A, ((adr))
+    div, @A, 2
+    mult, @A, 2
+    sub, @A, ((adr))
+    jnzero, et1
+    load, @A, ((adr))
+    div, @A, 4
+    mult, @A, 4
+    sub, @A, ((adr))
+    jzero, et1
+    load, @A, (wynik)
+    add, @A, ((adr))
+    store, @A, wynik
+et1:sub, @B, 1
+    jzero, et2
+    load, @A, (adr)
+    add, @A, 4
+    store, @A, adr
+    jump, et3
+et2:halt,
+.END
+--------------------------------
+.UNIT, srednia_nieprzystych
+.DATA
+    a: .WORD, 3,5,7,42
+    adr: .WORD, a
+    n: .WORD, 4
+    wynik: .WORD, 0
+    l: .WORD, 0
+.CODE
+    load, @B, (n)
+et3:load, @A, ((adr))
+    div, @A, 2
+    mult, @A, 2
+    sub, @A, ((adr))
+    jzero, et1
+    load, @A, ((adr))
+    add, @A, (wynik)
+    store, @A, wynik
+    load, @A, (l)
+    add, @A, 1
+    store, @A, l
+et1:sub,@B,1
+    jzero, et2
+    load, @A, (adr)
+    add, @A, 4
+    store, @A, adr
+    jump, et3
+et2:load, @A, (l)
+    jzero, koniec
+    load, @A, (wynik)
+    div, @A, (l)
+    store, @A, wynik
+koniec:halt,
+.END
+---------------------------
+.UNIT, roznica_liczb_duzych_i_malych
+.DATA
+    str: .WORD, 65,97,65,97,65,66,89,111,0
+    adr: .WORD, str
+    wynik: .WORD, 0
+.CODE
+    load, @B, 0
+et4:load, @A, ((adr))
+    jzero, et1
+    sub, @A, 65
+    jneg, et2
+    sub, @A, 25
+    jpos, et3
+    add, @B, 1
+    jump, et2
+et3:sub, @A, 7
+    jneg, et2
+    sub, @A, 25
+    jpos, et2
+    sub, @B, 1
+et2:load, @A, (adr)
+    add, @A, 4
+    store, @A, adr
+    jump, et4
+et1:store, @B, wynik
+    halt,
+.END
+----------------------------------
+.UNIT, wartosc_czworkowej_poprzedzonej_spacjami
+.DATA
+    str: .WORD, 32,32,49,51,0
+    adr: .WORD, str
+    wynik: .WORD, 0
+    x: .WORD, 0
+.CODE
+et2:load,@A,((adr))
+    sub, @A, 32
+    jnzero, et1
+    load, @A, (adr)
+    add, @A, 4
+    store, @A, adr
+    jump, et2
+et1:load, @A, ((adr))
+    sub, @A, 51
+    jpos, et3
+    add, @A, 51
+    sub, @A, 48
+    jneg, et3
+    store, @A, x
+    load, @A, (wynik)
+    mult, @A, 4
+    add, @A, (x)
+    store, @A, wynik
+    load, @A, (adr)
+    add, @A, 4
+    store, @A, adr
+    jump, et1
+et3:halt,
+.END
+

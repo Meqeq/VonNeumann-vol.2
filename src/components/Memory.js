@@ -16,12 +16,21 @@ class Memory extends Component {
                             <th> Wartość </th>
                         </tr>
                     </thead>
+                    <tbody>
+                        { this.props.memory.map( ({name, type, value, length }, key) => (
+                            <tr key={ key }>
+                                <td>{ key * 4 }</td>
+                                { length > 0 && <td rowSpan={ length } className="name">{ name }</td>}
+                                <td>{ value }</td>
+                            </tr>
+                        ))}
+                    </tbody>
                 </table>
             </div>
         )
     }
 }
 
-const mapStateToProps = state => ({ code: state.vn.code });
+const mapStateToProps = state => ({ memory: state.vn.memory });
 
 export default connect(mapStateToProps, {})(Memory);

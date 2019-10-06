@@ -10,6 +10,8 @@ class State extends Component {
                 return "Wprowadź kod";
             case 'ready':
                 return "Skompiluj";
+            case 'compiled':
+                return "Skompilowano";
             default:
                 return "Stan nieznany";
         }

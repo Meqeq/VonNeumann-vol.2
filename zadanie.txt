@@ -1,0 +1,92 @@
+.UNIT, suma_parzystych_niepodzielnych_przez_4
+.DATA
+    a: .WORD, 1,4,6,7,3,8,23,2
+    adr: .WORD, a
+    n: .WORD, 8
+    wynik: .WORD, 0
+.CODE
+    load, @B, (n)
+et3:load, @A, ((adr))
+    div, @A, 2
+    mult, @A, 2
+    sub, @A, ((adr))
+    jnzero, et1
+    load, @A, ((adr))
+    div, @A, 4
+    mult, @A, 4
+    sub, @A, ((adr))
+    jzero, et1
+    load, @A, (wynik)
+    add, @A, ((adr))
+    store, @A, wynik
+et1:sub, @B, 1
+    jzero, et2
+    load, @A, (adr)
+    add, @A, 4
+    store, @A, adr
+    jump, et3
+et2:halt,
+.END
+
+.UNIT, srednia_nieparzystych
+.DATA
+    a: .WORD, 3,5,7,42
+    adr: .WORD, a
+    n: .WORD, 4
+    wynik: .WORD, 0
+    l: .WORD, 0
+.CODE
+    load, @B, (n)
+et3:load, @A, ((adr))
+    div, @A, 2
+    mult, @A, 2
+    sub, @A, ((adr))
+    jzero, et1
+    load, @A, ((adr))
+    add, @A, (wynik)
+    store, @A, wynik
+    load, @A, (l)
+    add, @A, 1
+    store, @A, l
+et1:sub,@B,1
+    jzero, et2
+    load, @A, (adr)
+    add, @A, 4
+    store, @A, adr
+    jump, et3
+et2:load, @A, (l)
+    jzero, koniec
+    load, @A, (wynik)
+    div, @A, (l)
+    store, @A, wynik
+koniec:halt,
+.END
+
+.UNIT, roznica_liczb_duzych_i_malych
+.DATA
+    str: .WORD, 65,97,65,97,65,66,89,111,0
+    adr: .WORD, str
+    wynik: .WORD, 0
+.CODE
+    load, @B, 0
+et4:load, @A, ((adr))
+    jzero, et1
+    sub, @A, 65
+    jneg, et2
+    sub, @A, 25
+    jpos, et3
+    add, @B, 1
+    jump, et2
+et3:sub, @A, 7
+    jneg, et2
+    sub, @A, 25
+    jpos, et2
+    sub, @B, 1
+et2:load, @A, (adr)
+    add, @A, 4
+    store, @A, adr
+    jump, et4
+et1:store, @B, wynik
+    halt,
+.END
+

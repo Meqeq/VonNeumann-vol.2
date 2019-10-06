@@ -7,17 +7,55 @@
     table {
         & {
             width: 100%;
+            color: #fff;
         }
 
         th {
             width: 33.3%;
             background-color: #2f2f2f;
             text-align: center;
-            color: #fff;
+        }
+
+        tr {
+            border-bottom: 0.1em solid #000;
+        }
+        
+        td {
+            padding: 0 0.5em;
+            width: 33.3%;
+        }
+
+        td:first-child {
+            text-align: right;
+        }
+
+        .name {
+            text-align: center;
         }
 
         th:nth-child(even) {
             background-color: #404040;
         }
+
+        tr:nth-child(odd) {
+            td {
+                background-color: #515151;
+            }
+
+            td:nth-child(even) {
+                background-color: #626262;
+            }
+        }
+
+        tr:nth-child(even) {
+            td {
+                background-color: #737373;
+            }
+
+            td:nth-child(even) {
+                background-color: #848484;
+            }
+        }
+        
     }
 }

@@ -1,0 +1,434 @@
+.UNIT dzielenie
+
+.DATA
+	x: .WORD, 17
+	y: .WORD, 3
+	w: .WORD, 0
+	r: .WORD, 0
+.CODE
+	load, @B, (w)
+	load, @A, (x)
+et2:    sub, @A, (y)
+	jneg, et1
+	add, @B, 1
+	jump, et2
+et1:    add, @A, (y)
+	store, @A, r
+	store, @B, w
+	halt,
+.END
+
+------------------------------
+
+.UNIT, zamiana
+.DATA
+    t:.WORD, 1,2,3,4,5,6,7,8,9,10
+    adr:.WORD, t
+    n:.WORD,10
+    adrn:.WORD,0
+.CODE
+    load,@A,(n)
+    sub, @A, 1
+    mult, @A, 4
+    add, @A,(adr)
+    store,@A,adrn
+et1:sub,@A,(adr)
+    jneg,koniec
+    jzero,koniec
+    load,@A,((adr))
+    load,@B,((adrn))
+    store,@A,(adrn)
+    store,@B,(adr)
+    load,@A,(adr)
+    add,@A,4
+    store,@A,adr
+    load,@A,(adrn)
+    sub,@A,4
+    store, @A, adrn
+    jump, et1
+koniec: halt,
+.END
+
+.UNIT, wartosc_osemkowej_poprzedzonej_spacjami
+.DATA
+    str: .WORD, 32,32,49,48,51,53,33,45,0
+    adr: .WORD, str
+    wynik: .WORD, 0
+    x: .WORD, 0
+.CODE
+et2:load,@A,((adr))
+    sub, @A, 32
+    jnzero, et1
+    load, @A, (adr)
+    add, @A, 4
+    store, @A, adr
+    jump, et2
+et1:load, @A, ((adr))
+    sub, @A, 55
+    jpos, et3
+    add, @A, 55
+    sub, @A, 48
+    jneg, et3
+    store, @A, x
+    load, @A, (wynik)
+    mult, @A, 8
+    add, @A, (x)
+    store, @A, wynik
+    load, @A, (adr)
+    add, @A, 4
+    store, @A, adr
+    jump, et1
+et3:halt,
+.END
+4+ 40+256 = 300
+
+.UNIT, iloczyn_skalarny
+.DATA
+  v1: .WORD, 2,3,7#3
+  v2: .WORD, 4,5,7#8
+  n: .WORD, 10
+  adr1: .WORD, v1
+  adr2: .WORD, v2
+  wynik: .WORD, 0
+.CODE
+  load, @B, (n)
+  load, @A, 0
+  et1: load, @A, ((adr1))
+  mult, @A, ((adr2))
+  add, @A, (wynik)
+  store, @A, wynik
+  sub, @B, 1
+  jzero, koniec
+  load, @A, (adr1)
+  add, @A, 4
+  store, @A, adr1
+  load, @A, (adr2)
+  add, @A, 4
+  store, @A, adr2
+  jump, et1
+koniec: halt,
+.END
+
+.UNIT, fibo
+.DATA
+  f0: .WORD, 0
+  f1: .WORD, 1
+  n: .WORD, 20
+  temp: .WORD, 0
+.CODE
+  load, @B, (n)
+  jzero, koniec
+  et2: sub, @B, 1
+  jzero, koniec
+  load, @A, (f0)
+  add, @A, (f1)
+  store, @A, temp
+  load, @A, (f1)
+  store, @A, f0
+  load, @A, (temp)
+  store, @A, f1
+  jump, et2
+  koniec: halt,
+.END
+; 800 - 6.928308186422468e+166
+.UNIT, horner
+.DATA
+  a: .WORD, 1, 2, 5
+  n: .WORD, 3
+  adr: .WORD, a
+  wynik: .WORD, 0
+  x: .WORD, 2
+.CODE
+  load, @B, (n)
+  et1: load, @A, (wynik)
+  mult, @A, (x)
+  add, @A, ((adr))
+  store, @A, wynik
+  sub, @B, 1
+  jzero, koniec 
+  load, @A, (adr)
+  add, @A, 1
+  store, @A, adr
+  jump, et1
+  koniec: halt,
+.END
+
+.UNIT, minimum
+.DATA
+    t: .WORD, 23,34,34,23,5,46,45,2,70,11
+    n: .WORD, 10
+    adr: .WORD, t
+    min: .WORD, 0
+.CODE
+    load, @B, (n)
+    load, @A, ((adr))
+    store, @A, min
+et2:sub,@B,1
+    jzero, et1
+    load, @A, (adr)
+    add, @A, 4
+    store, @A, adr
+    load, @A, ((adr))
+    sub, @A, (min)
+    jpos, et2
+    jzero, et2
+    add, @A, (min)
+    store, @A, min
+    jump, et2
+et1:halt,
+.END
+
+str: .WORD, 65,66,66,65,32,45,45,0,50,2#70,0
+
+.UNIT, zamiana_na_male
+.DATA
+    str: .WORD, 65,66,66,65,32,45,45,0,50,2#70,0
+    adr: .WORD, str
+.CODE
+et2:load, @A, ((adr))
+    jzero, koniec
+    sub, @A, 65
+    jneg, et1
+    add, @A, 65
+    sub, @A, 90
+    jpos, et1
+    add, @A, 122
+    store, @A, (adr)
+et1:load, @A, (adr)
+    add, @A, 4
+    store, @A, adr
+    jump,et2
+koniec:halt,
+.END
+
+.UNIT, kek // czy liczba cyfr w ci¹gu znaków jest parzysta
+.DATA
+    str: .WORD, 2#49, 51,2#57,65,32,0
+    adr: str
+    wynik: .WORD, 0
+    liczba: .WORD, 0
+.CODE
+    load, @B, 0
+et2:load, @A, ((adr))
+    
+.UNIT, wartosc_10
+.DATA
+    str: .WORD, 2#49, 51,2#57,65,32,0
+    adr: .WORD, str
+    wynik: .WORD, 0
+    p: .WORD, 0
+.CODE
+    load, @B, 0
+et1:load, @A, ((adr))
+    jzero, koniec
+    sub, @A, 57
+    jpos, koniec
+    add, @A, 9
+    jneg, koniec
+    store, @A, p
+    add, @A, 48
+    mult, @B, 10
+    add, @B, (p)
+    load, @A, (adr)
+    add, @A, 1
+    store, @A, adr
+    jump, et1
+koniec:store, @B, wynik
+    halt,
+.END
+
+.UNIT, silnia
+.DATA
+    n: .WORD, 20
+    wynik: .WORD, 1
+.CODE
+    load, @B, 1
+    load, @A, (n)
+    jzero, et1
+et2:sub, @A, 1
+    jzero, et1
+    mult, @B, (n)
+    store, @A, n
+    jump, et2
+et1:store, @B, wynik
+    halt,
+.END
+
+.UNIT, oc_to_dec
+.DATA
+    x: .WORD, 456
+    wynik: .WORD, 0
+    p: .WORD, 0
+.CODE
+    load, @A, (x)
+et1:jzero, koniec
+    div, @A, 8
+    mult, @A, 8
+    sub, @A, (x)
+    mult, @A, -1
+    store, @A, p
+    load, @A, (wynik)
+    mult, @A, 8
+    add, @A, (p)
+    store, @A, wynik
+    load, @A, (x)
+    div, @A, 8
+    store, @A, x
+    jump, et1
+koniec: halt,
+.END
+
+.UNIT, suma_podzielnych_przez_sr_arytm
+.DATA
+    x: .WORD, 4
+    y: .WORD, 6
+    a: .WORD, 10,10,10,3,3
+    n: .WORD, 5
+    s: .WORD, 0
+    adr: .WORD, a
+    wynik: .WORD, 0
+.CODE
+    load, @A, (x)
+    add, @A, (y)
+    div, @A, 2
+    store, @A, s
+    load, @B, (n)
+et2:load, @A, ((adr))
+    div, @A, (s)
+    mult, @A, (s)
+    sub, @A((adr))
+    jnzero, et1
+    load, @A, (wynik)
+    add, @A, ((adr))
+    store, @A, wynik
+et1:sub, @B, 1
+    jzero, koniec
+    load, @A, (adr)
+    add, @A, 4
+    store, @A, adr
+    jump, et2
+koniec: halt,
+.END
+
+.UNIT, wartosc_szesnastkowej
+.DATA
+    str: .WORD, 69,66,49,50,55,21,0
+    adr: .WORD, str
+    wynik: .WORD, 0
+    p: .WORD, 0
+.CODE
+et3:load, @A, ((adr))
+    sub, @A, 57
+    jpos, et1
+    add, @A, 9
+    jneg, koniec
+    jump, et2
+et1:load, @A, ((adr))
+    sub, @A, 70
+    jpos, koniec
+    add, @A, 5
+    jneg, koniec
+    add, @A, 10
+et2:store, @A, p
+    load, @A, (wynik)
+    mult, @A, 16
+    add, @A, (p)
+    store, @A, wynik
+    load, @A, (adr)
+    add, @A, 4
+    store, @A, adr
+    jump, et3
+koniec: halt,
+.END
+
+.UNIT, srednia_nieprzystych
+.DATA
+    a: .WORD, 3,5,7,42,44,12,15
+    adr: .WORD, a
+    n: .WORD, 7
+    wynik: .WORD, 0
+    l: .WORD, 0
+.CODE
+    load, @B, (n)
+et3:load, @A, ((adr))
+    div, @A, 2
+    mult, @A, 2
+    sub, @A, ((adr))
+    jzero, et1
+    load, @A, ((adr))
+    add, @A, (wynik)
+    store, @A, wynik
+    load, @A, (l)
+    add, @A, 1
+    store, @A, l
+et1:sub,@B,1
+    jzero, et2
+    load, @A, (adr)
+    add, @A, 4
+    store, @A, adr
+    jump, et3
+et2:load, @A, (l)
+    jzero, koniec
+    load, @A, (wynik)
+    div, @A, (l)
+    store, @A, wynik
+koniec:halt,
+.END
+
+.UNIT, drugie_minimum
+.DATA
+    a: .WORD, 17,28,34,3,2,4,1,5
+    adr: .WORD, a
+    n: .WORD, 8
+    min1: .WORD, 0
+    min2: .WORD, 0
+.CODE
+    load, @A, ((adr))
+    load, @B, (adr)
+    load, @B, 4
+    store, @B, adr
+    sub, @A, ((adr))
+    jpos, et1
+    add, @A, ((adr))
+    store, @A, min1
+    load, @A, ((adr))
+    store, @A, min2
+    jump,et2
+et1:add, @A, ((adr))
+    store, @A, min2
+    load, @A, ((adr))
+    store, @A, min1
+et2:load, @B, (n)
+    sub, @B, 2
+    jzero, koniec
+et5:load, @A, (adr)
+    add, @A, 4
+    store, @A, adr
+    load, @A, ((adr))
+    sub, @A, (min1)
+    jpos, et3
+    load, @A, (min1)
+    store, @A, min2
+    load, @A, ((adr))
+    store, @A, min1
+    jump, et4
+et3:load, @A, ((adr))
+    sub, @A, (min2)
+    jpos, et4
+    add, @A, (min2)
+    store, @A, min2
+et4:sub, @B, 1
+    jnzero, et5
+koniec:halt,
+.END
+
+
+ 
+
+suma elementów parzystych niepodzielnych przez 4
+œrednia arytmetyczna nieparzystych
+string, ró¿nica pomiêdzy iloœci¹ du¿ych i ma³ych liter
+
+
+
+
