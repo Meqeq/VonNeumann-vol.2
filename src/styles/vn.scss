@@ -21,6 +21,9 @@
                 margin: 0.5em 0;
                 padding: 0.3em;
                 cursor: pointer;
+                user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
             }
 
             &:hover {

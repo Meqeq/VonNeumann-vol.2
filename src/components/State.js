@@ -12,6 +12,12 @@ class State extends Component {
                 return "Skompiluj";
             case 'compiled':
                 return "Skompilowano";
+            case 'runing':
+                return "Runn-nn-ning";
+            case 'end':
+                return "Zakończono";
+            case 'error':
+                return "Błąd";
             default:
                 return "Stan nieznany";
         }
@@ -33,4 +39,4 @@ const mapStateToProps = state => {
     return { machineState: state.vn.machineState }
 };
 
-export default connect(mapStateToProps, {})(State);
+export default connect(mapStateToProps)(State);

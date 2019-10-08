@@ -5,6 +5,7 @@
   "dependencies": {
     "node-sass": "^4.12.0",
     "react": "^16.10.1",
+    "react-cookies": "^0.1.1",
     "react-dom": "^16.10.1",
     "react-monaco-editor": "^0.22.0",
     "react-redux": "^7.1.1",

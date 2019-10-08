@@ -17,7 +17,7 @@ class Memory extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        { this.props.memory.map( ({name, type, value, length }, key) => (
+                        { this.props.memory.map( ({name, value, length }, key) => (
                             <tr key={ key }>
                                 <td>{ key * 4 }</td>
                                 { length > 0 && <td rowSpan={ length } className="name">{ name }</td>}

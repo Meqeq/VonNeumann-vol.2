@@ -15,7 +15,7 @@ function App() {
         <VN />
 
         <footer>
-
+            MeqeqWengiel &amp; Assembler GANG &amp; Assemblerowe Świry | 2019
         </footer>
     </React.Fragment>
   );

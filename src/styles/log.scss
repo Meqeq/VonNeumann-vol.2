@@ -1,0 +1,70 @@
+.logs {
+    position: relative;
+    min-height: 7.9em;
+    margin-top: 1em;
+    background-color: #e0e0e0;
+}
+
+.log-content {
+    width: calc(100% - 2rem);
+    padding: 0.3em;
+    max-height: 8.5em;
+    overflow-y: auto;
+    font-size: 0.75em;
+}
+
+.log-settings {
+    position: absolute;
+    top: 1.5em;
+    right: 0;
+    width: 2em;
+}
+
+.fa-broom {
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: #fff;
+    height: 1.5em;
+    line-height: 1.5em;
+    width: 2em;
+    text-align: center;
+}
+
+.log-settings i {
+    display: block;
+    text-align: center;
+    padding: 0.3em;
+}
+
+.ls-err {
+    background-color: rgb(182, 15, 15);
+    color: #fff;
+}
+
+.ls-warn {
+    background-color: rgb(226, 95, 19);
+    color: #fff;
+}
+
+.ls-info {
+    background-color: rgb(26, 91, 175);
+    color: #fff;
+}
+
+.ls-exe {
+    background-color: rgb(29, 170, 76);
+    color: #fff;
+}
+
+.logs p {
+    margin-bottom: 0;
+}
+
+.log-error {
+    color: rgb(190, 30, 30);
+}
+
+.log-info {
+    color: rgb(10, 75, 161);
+}

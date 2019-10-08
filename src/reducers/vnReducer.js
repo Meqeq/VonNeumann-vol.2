@@ -1,31 +1,8 @@
-import { CHANGE, CHANGE_STATE, COMPILE, SET_NAME, SET_ERROR, MEMORY_INIT, SET_INSTRUCTIONS, LOAD, ADD, SUB, MULT, DIV, JUMP, STORE, NEXT } from '../actions/vnActions';
+import { CHANGE, CHANGE_STATE, COMPILE, SET_NAME, SET_ERROR, MEMORY_INIT, SET_INSTRUCTIONS, LOAD, ADD, SUB, MULT, DIV, JUMP, STORE, NEXT, RUN, HALT, LOG, CLEAR_LOG } from '../actions/vnActions';
 
 
 const inititialState = {
-    code: `.UNIT, minimum
-    .DATA
-        t: .WORD, 23,34,34,23,5,46,45,2,70,11
-        n: .WORD, 10
-        adr: .WORD, t
-        min: .WORD, 0
-    .CODE
-        load, @B, (n)
-        load, @A, ((adr))
-        store, @A, min
-    et2:sub,@B,1
-        jzero, et1
-        load, @A, (adr)
-        add, @A, 4
-        store, @A, adr
-        load, @A, ((adr))
-        sub, @A, (min)
-        jpos, et2
-        jzero, et2
-        add, @A, (min)
-        store, @A, min
-        jump, et2
-    et1:halt,
-    .END`,
+    code: "",
     machineState: "waiting",
     memory: [],
     addresses: {},
@@ -38,7 +15,11 @@ const inititialState = {
     acc: {
         "@A": 0,
         "@B": 0
-    }
+    },
+    interval: null,
+    clock: 1,
+    logs: [],
+    offset: 3
 }
 
 export default (state = inititialState, { type, payload }) => {
@@ -57,7 +38,11 @@ export default (state = inititialState, { type, payload }) => {
             return {
                 ...state,
                 machineState: "compiled",
-                programCounter: 0
+                programCounter: 0,
+                logs: [
+                    ...state.logs,
+                    { type: "info", text: "Skompilowano program: " + state.name }
+                ]
             }
         case SET_NAME:
             return {
@@ -68,13 +53,19 @@ export default (state = inititialState, { type, payload }) => {
             return {
                 ...state,
                 error: payload,
-                state: "error",
+                machineState: "error",
+                interval: clearInterval( state.interval ),
+                logs: [
+                    ...state.logs,
+                    { type: "error", text: "Wystąpił błąd: " + payload }
+                ]
             }
         case MEMORY_INIT:
             return {
                 ...state,
                 memory: payload.memory,
-                addresses: payload.addresses
+                addresses: payload.addresses,
+                offset: payload.offset + 3
             }
         case SET_INSTRUCTIONS:
             return {
@@ -87,51 +78,109 @@ export default (state = inititialState, { type, payload }) => {
                 ...state,
                 acc: { ...state.acc, [payload.acc]: payload.value },
                 lastAcc: payload.acc,
-                programCounter: state.programCounter + 1
+                programCounter: state.programCounter + 1,
+                logs: [
+                    ...state.logs,
+                    { type: "exe", text: `Załadowano ${payload.value} do ${payload.acc}` }
+                ]
             }
         case ADD:
             return {
                 ...state,
                 acc: { ...state.acc, [payload.acc]: state.acc[payload.acc] + payload.value },
                 lastAcc: payload.acc,
-                programCounter: state.programCounter + 1
+                programCounter: state.programCounter + 1,
+                logs: [
+                    ...state.logs,
+                    { type: "exe", text: `Dodano ${payload.value} do ${payload.acc}` }
+                ]
             }
         case SUB:
             return {
                 ...state,
                 acc: { ...state.acc, [payload.acc]: state.acc[payload.acc] - payload.value },
                 lastAcc: payload.acc,
-                programCounter: state.programCounter + 1
+                programCounter: state.programCounter + 1,
+                logs: [
+                    ...state.logs,
+                    { type: "exe", text: `Odjęto ${payload.value} od ${payload.acc}` }
+                ]
             }
         case MULT:
             return {
                 ...state,
                 acc: { ...state.acc, [payload.acc]: state.acc[payload.acc] * payload.value },
                 lastAcc: payload.acc,
-                programCounter: state.programCounter + 1
+                programCounter: state.programCounter + 1,
+                logs: [
+                    ...state.logs,
+                    { type: "exe", text: `Domnożono ${payload.value} do ${payload.acc}` }
+                ]
             }
         case DIV:
             return {
                 ...state,
                 acc: { ...state.acc, [payload.acc]: Math.floor(state.acc[payload.acc] / payload.value) },
                 lastAcc: payload.acc,
-                programCounter: state.programCounter + 1
+                programCounter: state.programCounter + 1,
+                logs: [
+                    ...state.logs,
+                    { type: "exe", text: `Podzielono przez ${payload.value} z ${payload.acc}` }
+                ]
             }
         case JUMP:
             return {
                 ...state,
-                programCounter: payload
+                programCounter: payload,
+                logs: [
+                    ...state.logs,
+                    { type: "exe", text: `Skok do ${payload}` }
+                ]
             }
         case NEXT:
             return {
                 ...state,
-                programCounter: state.programCounter + 1
+                programCounter: state.programCounter + 1,
             }
         case STORE:
             return {
                 ...state,
                 memory: payload,
-                programCounter: state.programCounter + 1
+                programCounter: state.programCounter + 1,
+                logs: [
+                    ...state.logs,
+                    { type: "exe", text: `Zapisano zawartość ${state.lastAcc}` }
+                ]
+            }
+        case RUN:
+            return {
+                ...state,
+                interval: payload,
+                machineState: "runing",
+                logs: [
+                    ...state.logs,
+                    { type: "info", text: "Uruchomiono program" }
+                ]
+            }
+        case HALT:
+            return {
+                ...state,
+                interval: clearInterval( state.interval ),
+                machineState: "end",
+                logs: [
+                    ...state.logs,
+                    { type: "info", text: "Zakończono program" }
+                ]
+            }
+        case LOG:
+            return {
+                ...state,
+                logs: [...state.logs, { type: payload.type, text: payload.text }]
+            }
+        case CLEAR_LOG:
+            return {
+                ...state,
+                logs: []
             }
         default:
             return state;

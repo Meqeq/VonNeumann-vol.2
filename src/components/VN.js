@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import Memory from './Memory';
 import Editor from './Editor';
 import State from './State';
+import Log from './Log';
 
-import { compileAction, stepAction } from '../actions/vnActions';
+import { compileAction, stepAction, runAction } from '../actions/vnActions';
 
 import '../styles/vn.scss';
 
@@ -31,7 +32,7 @@ class VN extends Component {
                             <br />
                             <span>Skompiluj</span>
                         </div>
-                        <div className="control-button" onClick={ () => this.run() }>
+                        <div className="control-button" onClick={ () => this.props.run() }>
                             <i className="fas fa-play" />
                             <br />
                             <span>Uruchom</span>
@@ -62,6 +63,8 @@ class VN extends Component {
                             </div>
                         </div>
                     </div>
+
+                    <Log />
                 </div>
 
                 <Memory />
@@ -75,6 +78,7 @@ const mapStateToProps = state => ({ code: state.vn.code, accA: state.vn.acc["@A"
 const mapActionsToProps = {
     compile: compileAction,
     step: stepAction,
+    run: runAction
 }
 
 export default connect(mapStateToProps, mapActionsToProps)(VN);
