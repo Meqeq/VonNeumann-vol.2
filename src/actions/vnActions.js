@@ -189,7 +189,7 @@ const setInstructions = code => {
 export const compileAction = () => (dispatch, getState) => {
     try {
         let co = getState().vn.code;
-        let [ illegalCharacter ] = co.match(/[^ \n\r\n\t.:A-Za-z,0-9_@()]/) || [];
+        let [ illegalCharacter ] = co.match(/[^ \n\r\n\t.:A-Za-z,0-9_@()]#/) || [];
         if( illegalCharacter ) {
             throw new Error(`Niedozwolony znak: ${illegalCharacter} - linia ${co.countOcc("\n", illegalCharacter) + 1}`);
         }
