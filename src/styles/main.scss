@@ -1,17 +1,18 @@
-body {
-    
+html {
+    font-size: 12px;
 }
 
 #root {
     min-height: 100vh;
     display: grid;
     grid-gap: 1em 0;
-    grid-template-rows: 3em 1fr 2em;
-    grid-template-columns: 1em 1fr 1em 1fr 1em 1fr 1em;
-    grid-template-areas: 
-        "header header header header header header header"
-        ". code . controls . memory ."
-        "footer footer footer footer footer footer footer";
+    grid-template-rows: 3em calc(100vh-3em) calc(100vh-3em) calc(100vh-3em) 2em;
+    grid-template-columns: 1fr;
+    grid-template-areas: "header"
+        "code"
+        "controls"
+        "memory"
+        "footer";
 }
 
 header {
@@ -29,4 +30,37 @@ footer {
     color: #fff;
     text-align: center;
     line-height: 2em;
+}
+
+
+@media (min-width: 575px) {
+    html {
+        font-size: 14px;
+    }
+}
+
+@media (min-width: 767px) {
+    html {
+        font-size: 16px;
+    }
+    #root {
+        grid-template-rows: 3em 1fr 2em;
+        grid-template-columns: 1em 1fr 1em 1fr 1em 1fr 1em;
+        grid-template-areas: 
+        "header header header header header header header"
+        ". code . controls . memory ."
+        "footer footer footer footer footer footer footer";
+    }
+}
+
+@media (min-width: 991px) {
+    html {
+        font-size: 18px;
+    }
+}
+
+@media (min-width: 1199px) {
+    html {
+        font-size: 20px;
+    }
 }
